@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('pokemon-universal App', () => {
+describe('nguniv App', () => {
   let page: AppPage;
 
   beforeEach(() => {

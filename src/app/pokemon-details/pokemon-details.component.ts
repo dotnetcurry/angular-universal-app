@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { PokemonService } from '../pokemon.service';
 import { Pokemon } from '../pokemon';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pokemon-details',
@@ -14,7 +15,22 @@ export class PokemonDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private pokemonService: PokemonService) { }
+    private pokemonService: PokemonService,
+    meta: Meta,
+    title: Title) {
+    title.setTitle('Pokemon details page');
+    meta.addTags([
+      {
+        name: 'author', content: 'Ravi Kiran'
+      },
+      {
+        name: 'keywords', content: 'Angular 4 SEO'
+      },
+      {
+        name: 'description', content: 'Details of a pokemon'
+      }
+    ]);
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {

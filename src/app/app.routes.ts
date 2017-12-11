@@ -5,7 +5,8 @@ import { PokemonDetailsComponent } from './pokemon-details/pokemon-details.compo
 let routes: Routes = [
 	{
 		path: '',
-		component: PokemonListComponent
+		component: PokemonListComponent,
+		pathMatch: 'full'
 	},
 	{
 		path: 'details/:id',

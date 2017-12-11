@@ -1,41 +1,22 @@
-let express = require('express');
-let path = require('path');
-let ngCore = require('@angular/core');
-let fs = require('fs');
+var express = require('express');
+var app = express();
 
-let app = express();
-const PORT = 3000;
+//to serve static files
+app.use(express.static(__dirname + "/dist/browser"));
+var port = process.env.PORT || 9511;
 
-// Load zone.js for the server
-require('zone.js/dist/zone-node');
-
-// Enabling prod mode
-ngCore.enableProdMode();
-
-// Import renderModuleFactory from @angular/platform-server
-let renderModuleFactory = require('@angular/platform-server').renderModuleFactory;
-
-// Load the index.html file from the dist folder
-let index = fs.readFileSync('./dist/index.html', 'utf8');
-
-// Import the AOT compiled factory for your AppServerModule
-// This import will change with the hash of your built server bundle
-let AppServerModuleNgFactory = require('./dist-server/main.bundle').AppServerModuleNgFactory;
-app.engine('html', (_, options, callback) => {
-	const opts = { document: index, url: options.req.url };
-	// Render to HTML and send it to the callback
-	renderModuleFactory(AppServerModuleNgFactory, opts).then(html => callback(null, html));
+//handler if url has api at the begining
+app.get('/api/*', function (req, res) {
+    res.send('There is no problem to api rest calls until it is defined above the fallback request');
 });
 
-app.set('view engine', 'html');
-app.set('views', 'dist')
-app.get('*.*', express.static(path.join(__dirname, '.', 'dist')));
+//fallback to index.html if resource not found or incase request url doesn't match any listeners
+app.use('/*', express.static(__dirname + '/dist/browser/index.html'));
 
-// Respond with the content read from index for all requests
-app.get('*', (req, res) => {
-	res.render('index', { req });
-});
-
-app.listen(PORT, () => {
-	console.log(`listening on http://localhost:${PORT}!`);
+//or
+/*app.get('/*', function(req, res){
+    res.sendFile(__dirname + '/index.html');
+});*/
+app.listen(port, function () {
+    console.log('Express server started on port : ' + port);
 });
