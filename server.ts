@@ -19,10 +19,10 @@ const PORT = process.env.PORT || 4201;
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
 // Our index.html we'll use as our template
-const template = readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
+const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString();
 
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/main.bundle');
+const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist-server/main.bundle');
 
 const { provideModuleMap } = require('@nguniversal/module-map-ngfactory-loader');
 
@@ -41,10 +41,10 @@ app.engine('html', (_, options, callback) => {
 });
 
 app.set('view engine', 'html');
-app.set('views', join(DIST_FOLDER, 'browser'));
+app.set('views', DIST_FOLDER);
 
 // Server static files from /browser
-app.get('*.*', express.static(join(DIST_FOLDER, 'browser')));
+app.get('*.*', express.static(DIST_FOLDER));
 
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {
